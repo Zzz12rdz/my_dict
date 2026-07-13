@@ -208,9 +208,13 @@ class escn_Eudict {
             audios = [];
         }
 
-        let content = doc.querySelector('#ExpFCChild');
+        // esdict.cn cambió el id de este contenedor de "ExpFCChild" a
+        // "ExpFCchild" (child en minúscula). Probamos ambos por si el sitio
+        // vuelve a cambiarlo o hay variaciones entre páginas.
+        let content = doc.querySelector('#ExpFCchild') || doc.querySelector('#ExpFCChild');
         if (!content) {
-            console.warn('[escn_Eudict] no se encontró #ExpFCChild (contenido de la definición). URL:', url);
+            console.warn('[escn_Eudict] no se encontró el contenedor de la definición ' +
+                '(#ExpFCchild / #ExpFCChild). URL:', url);
             return [];
         }
 
@@ -218,6 +222,7 @@ class escn_Eudict {
         this.removeTags(content, '#word-thumbnail-image');
         this.removeTags(content, '[style]');
         if (content.parentNode) {
+            this.removeTags(content.parentNode, '#ExpFCchild>br');
             this.removeTags(content.parentNode, '#ExpFCChild>br');
         }
         let anchor = content.querySelector('a');
